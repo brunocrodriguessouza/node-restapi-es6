@@ -5,6 +5,8 @@ import Restaurant from '../model/restaurant';
 export default({ config, db}) => {
     const api = Router();
 
+    // CRUD - Create Read Update Delete
+
     // '/v1/restaurant/add'
     api.post('/add', (req, res) => {
         const newRest = new Restaurant();
@@ -17,6 +19,28 @@ export default({ config, db}) => {
             res.json({message: 'Restaurant saved sucessfuly'});
         }); 
     });
+
+    // '/v1/restaurant - Read'
+    api.get('/', (req, res) => {
+        Restaurant.find({
+
+        }, (err, restaurants) => {
+            if (err) {
+                res.send(err)
+            }
+            res.json(restaurants)
+        })
+    })
+
+    // '/v1/restaurant/:id - Read'
+    api.get('/:id', (req, res) => {
+        Restaurant.findById(req.params.id, (err, restaurant) => {
+            if (err) {
+                res.send(err)
+            }
+            res.json(restaurant)
+        })
+    })
 
     return api;
 }
