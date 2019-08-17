@@ -1,4 +1,4 @@
-// import bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import express from 'express';
 import http from 'http';
 // import mongoose from 'mongoose';
@@ -10,6 +10,10 @@ const app = express();
 app.server = http.createServer(app);
 
 // middlewere
+// parse application/json
+app.use(bodyParser.json({
+    limit: config.bodyLimit
+}));
 
 // passport config
 
