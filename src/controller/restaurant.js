@@ -32,7 +32,7 @@ export default({ config, db}) => {
         })
     })
 
-    // '/v1/restaurant/:id - Read'
+    // '/v1/restaurant/:id - Read 2'
     api.get('/:id', (req, res) => {
         Restaurant.findById(req.params.id, (err, restaurant) => {
             if (err) {
@@ -53,9 +53,21 @@ export default({ config, db}) => {
                 if (err) {
                     res.send(err);
                 }
-                res.json({ message: "Restaurant info updated"})
-            })
-        })
+                res.json({ message: "Restaurant info updated"});
+            });
+        });
+    });
+
+    api.delete('/:id', (req, res) => {
+        Restaurant.remove({
+            _id: req.params.id
+        }, (err, restaurant) => {
+            if (err) {
+                res.send(err);
+            }
+            res.json({ message: "Restaurant Successfully Removed!"}); 
+        });
+
     })
 
     return api;
