@@ -49,18 +49,21 @@ export default({ config, db}) => {
     // '/v1/foodtruck/:id - Update'
     api.put('/:id', (req, res) => {
         FoodTruck.findById(req.params.id, (err, foodtruck) => {
+          if (err) {
+            res.send(err);
+          }
+          foodtruck.name = req.body.name;
+          foodtruck.foodtype = req.body.foodtype;
+          foodtruck.avgcost = req.body.avgcost;
+          foodtruck.geometry.coordinates = req.body.geometry.coordinates;
+          foodtruck.save(function(err) {
             if (err) {
-                res.send(err);
+              res.send(err);
             }
-            foodtruck.name = req.body.name;
-            foodtruck.save(err => {
-                if (err) {
-                    res.send(err);
-                }
-                res.json({ message: "FoodTruck info updated"});
-            });
+            res.json({ message: 'Food Truck info updated' });
+          });
         });
-    });
+      });
 
     // '/v1/foodtruck/:id - Delete'
     api.delete('/:id', (req, res) => {
@@ -112,6 +115,16 @@ export default({ config, db}) => {
         res.json(reviews);
         });
     });
+
+    // /v1/foodtruck/foodtype/:foodtype’
+    api.get('/foodtype/:foodtype', (req, res) => {
+        FoodTruck.find({ foodtype: req.params.foodtype }, (err, foodtype) => {
+            if (err) {
+                res.send(err);
+            }
+            res.json({ foodtype });
+        })
+    })
 
     return api;
 }
